@@ -26,6 +26,7 @@ const Players = (function(){
 
   const change = function(){
     currentPlayer.push(currentPlayer.shift())
+    return true
   }
 
   const current = function(){
@@ -62,24 +63,16 @@ const MainGame = function(){
       setCell(posX, posY, value){
         if (this.getCell(posX, posY) !== value) {
           boardStatus[posX][posY] = value
-          console.log('success')
           return boardStatus[posX][posY]
         } else {
-          console.log('false')
           return false
         }
+      },
+      checkWin(){
+
       }
     }
   })()
-
-  // const players = []
-  // let currentPlayer
-  // const addPlayer = function(name, symbol){
-  //   players.push(Player(name, symbol))
-  //   return players
-  // }
-
-
 
   /**
    * Below belong to MainGame
@@ -97,6 +90,8 @@ const MainGame = function(){
   }
   refreshBoard()
 
+  Players.add('Binh','x')
+  Players.add('Xuan','o')
   /**
    * Add events to cells
    */
@@ -105,7 +100,10 @@ const MainGame = function(){
     cells.forEach((cell) => {
       cell.addEventListener('click', (event)=>{
         let { row: posX, column: posY } = cell.dataset
-        GameBoard.setCell(posX, posY, 'o')
+        if (cell.dataset.value != ''){ return }
+        GameBoard.setCell(posX, posY, Players.current().symbol)
+        Players.change()
+        console.log(GameBoard.status())
         refreshBoard()
       })
     })
