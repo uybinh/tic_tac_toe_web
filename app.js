@@ -7,10 +7,10 @@ const Player = function(name, symbol){
 }
 
 /**
- * @namespace Players
+ * @module Players
  * @returns .add(), .change(), .list(), .current()
  */
-const Players = (function(){
+const Players = function(){
   let players = []
   let currentPlayer = []
   const add = function(name, symbol){
@@ -34,7 +34,7 @@ const Players = (function(){
   }
 
   return { add, change, list, current }
-})()
+}
 
 /**
  * @module GameBoard
@@ -74,6 +74,8 @@ const GameBoard = function(){
  * @returns .GameBoard
  */
 const MainGame = (function(){
+  let board = GameBoard()
+  let players = Players()
 
   const refreshBoard = function(){
     let cells = document.querySelectorAll('.cell')
@@ -92,24 +94,27 @@ const MainGame = (function(){
       cell.addEventListener('click', (event)=>{
         let { row: posX, column: posY } = cell.dataset
         if (cell.dataset.value != ''){ return }
-        board.setCell(posX, posY, Players.current().symbol)
-        Players.change()
-        console.log(board.status())
+        board.setCell(posX, posY, players.current().symbol)
+        console.log(players.current())
         refreshBoard()
+        players.change()
       })
     })
   }
 
   const newGame = function(){
+    players = Players()
     board = GameBoard()
     refreshBoard()
-    Players.add('Binh','x')
-    Players.add('Xuan','o')
+    players.add('Binh','x')
+    players.add('Xuan','o')
     setCellsEvent()
   }
 
   return { newGame }
 })()
+
+
 let game = MainGame
 game.newGame()
 document.querySelector('#btn-new').onclick = game.newGame
