@@ -55,7 +55,7 @@ const GameBoard = function(){
       return boardStatus[posX][posY]
     },
     setCell(posX, posY, value){
-      if (this.getCell(posX, posY) !== value) {
+      if (this.getCell(posX, posY) === '') {
         boardStatus[posX][posY] = value
         return boardStatus[posX][posY]
       } else {
