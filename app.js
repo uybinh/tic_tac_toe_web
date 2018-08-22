@@ -7,7 +7,7 @@ const Player = function(name, symbol){
 }
 
 /**
- * @module Players
+ * @namespace Players
  * @returns .add(), .change(), .list(), .current()
  */
 const Players = (function(){
@@ -40,7 +40,7 @@ const Players = (function(){
  * @module GameBoard
  * @returns .status(), .getCell(), .setCell()
  */
-const GameBoard = (function(){
+const GameBoard = function(){
   let boardStatus = [
     ['', '', ''],
     ['', '', ''],
@@ -66,8 +66,7 @@ const GameBoard = (function(){
 
     }
   }
-})()
-
+}
 
 /**
  * Represent the main module of the Game
@@ -80,7 +79,7 @@ const MainGame = (function(){
     let cells = document.querySelectorAll('.cell')
     cells.forEach((cell) => {
       let { row: posX, column: posY } = cell.dataset
-      cell.dataset.value = GameBoard.getCell(posX, posY)
+      cell.dataset.value = board.getCell(posX, posY)
     })
   }
 
@@ -93,22 +92,24 @@ const MainGame = (function(){
       cell.addEventListener('click', (event)=>{
         let { row: posX, column: posY } = cell.dataset
         if (cell.dataset.value != ''){ return }
-        GameBoard.setCell(posX, posY, Players.current().symbol)
+        board.setCell(posX, posY, Players.current().symbol)
         Players.change()
-        console.log(GameBoard.status())
+        console.log(board.status())
         refreshBoard()
       })
     })
   }
 
-  const start = function(){
+  const newGame = function(){
+    board = GameBoard()
     refreshBoard()
     Players.add('Binh','x')
     Players.add('Xuan','o')
     setCellsEvent()
   }
 
-  return { start }
+  return { newGame }
 })()
-
-let game = MainGame.start()
+let game = MainGame
+game.newGame()
+document.querySelector('#btn-new').onclick = game.newGame
