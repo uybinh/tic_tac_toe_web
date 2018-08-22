@@ -41,25 +41,24 @@ body {
   align-items: center;
   background: white;
   transition: background ease-out .25s;
-}
 
-.cell[data-row='1'] {
-  border-top: $border-default;
-  border-bottom: $border-default;
-}
+  &[data-row='1'] {
+    border-top: $border-default;
+    border-bottom: $border-default;
+  }
+  &:nth-child(3n+2) {
+    border-left: $border-default;
+    border-right: $border-default;
+  }
+  &::after {
+    content: attr(data-value);
+    margin: 0 auto;
+    font-size: 3rem;
+    text-transform: uppercase;
+  }
 
-.cell:nth-child(3n+2) {
-  border-left: $border-default;
-  border-right: $border-default;
-}
-
-.cell::after {
-  content: attr(data-value);
-  margin: 0 auto;
-  font-size: 3rem;
-}
-
-.cell:hover {
-  color: white;
-  background: rgb(39, 39, 39);
+  &:hover {
+    color: white;
+    background: rgb(39, 39, 39);
+  }
 }

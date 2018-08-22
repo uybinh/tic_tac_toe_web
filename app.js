@@ -10,9 +10,9 @@ const mainGame = function(){
    */
   const gameBoard = (function(){
     let boardStatus = [
-      ['a', 'a', 'a'],
-      ['a', 'a', 'a'],
-      ['a', 'a', 'a']
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', '']
     ]
 
     return {
@@ -23,11 +23,30 @@ const mainGame = function(){
         return boardStatus[posX][posY]
       },
       setCell(posX, posY, value){
-        boardStatus[posX][posY] = value
-        return boardStatus[posX][posY]
+        if (this.getCell(posX, posY) !== value) {
+          boardStatus[posX][posY] = value
+          console.log('success')
+          return boardStatus[posX][posY]
+        } else {
+          console.log('false')
+          return false
+        }
       }
     }
   })()
+
+  /**
+   * Set cells value
+   */
+  let refreshBoard = function(){
+    let cells = document.querySelectorAll('.cell')
+    cells.forEach((cell) => {
+      let posX = cell.dataset.row
+      let posY = cell.dataset.column
+      cell.dataset.value = gameBoard.getCell(posX, posY)
+    })
+  }
+  refreshBoard()
 
   /**
    * Add events to cells
@@ -37,20 +56,20 @@ const mainGame = function(){
     cell.addEventListener('click', (event)=>{
       let posX = cell.dataset.row
       let posY = cell.dataset.column
-      console.log(gameBoard.getCell(posX, posY))
+      gameBoard.setCell(posX, posY, 'o')
+      refreshBoard()
     })
   })
 
-
-  return {
-    gameBoard
-  }
+  return { gameBoard }
 }
 
 /**
  * Create new game after DOM loaded
  */
-document.addEventListener('DOMContentLoaded', ()=>{
-  let game = mainGame()
-  console.log(game)
-})
+// document.addEventListener('DOMContentLoaded', ()=>{
+//   let game = mainGame()
+//   console.log(game)
+// })
+
+let game = mainGame()
