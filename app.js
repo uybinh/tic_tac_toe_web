@@ -41,8 +41,7 @@ const mainGame = function(){
   let refreshBoard = function(){
     let cells = document.querySelectorAll('.cell')
     cells.forEach((cell) => {
-      let posX = cell.dataset.row
-      let posY = cell.dataset.column
+      let { row: posX, column: posY } = cell.dataset
       cell.dataset.value = gameBoard.getCell(posX, posY)
     })
   }
@@ -54,8 +53,7 @@ const mainGame = function(){
   let cells = document.querySelectorAll('.cell')
   cells.forEach((cell) => {
     cell.addEventListener('click', (event)=>{
-      let posX = cell.dataset.row
-      let posY = cell.dataset.column
+      let { row: posX, column: posY } = cell.dataset
       gameBoard.setCell(posX, posY, 'o')
       refreshBoard()
     })
