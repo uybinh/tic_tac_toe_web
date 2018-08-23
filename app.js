@@ -34,7 +34,12 @@ const Players = function(){
     return currentPlayer[0]
   }
 
-  return { add, change, list, current }
+  const resetCurrent = function(){
+    currentPlayer = Array.from(players)
+    return currentPlayer
+  }
+
+  return { add, change, list, current, resetCurrent  }
 }
 
 /**
@@ -148,15 +153,16 @@ const MainGame = (function(){
 
   return { // an object
     newGame(){
+      players.resetCurrent()
       winner = false
       board = GameBoard()
-      players.add('Binh','x')
-      players.add('Xuan','o')
       refreshBoard()
       setCellsEvent()
     },
     start(){
       players = Players()
+      players.add('Binh','x')
+      players.add('Xuan','o')
       this.newGame()
     }
   }
