@@ -1,5 +1,6 @@
 $border-default: 1px solid gray;
-
+$color-x: rgb(40, 40, 245);
+$color-o: rgb(226, 23, 50);
 * {
   box-sizing: border-box;
 }
@@ -96,8 +97,6 @@ body {
   }
 }
 
-
-
 .cell {
   display: flex;
   align-items: center;
@@ -116,11 +115,22 @@ body {
     content: attr(data-value);
     margin: 0 auto;
     font-size: 3rem;
+    font-weight: 700;
     text-transform: uppercase;
+  }
+
+  &[data-value='x'] {
+    color: $color-x;
+  }
+
+  &[data-value='o'] {
+    color: $color-o;
   }
 
   &:hover {
     color: white;
     background: rgb(39, 39, 39);
+
   }
+
 }
