@@ -3,7 +3,8 @@
  * @returns player object with .name, .symbol
  */
 const Player = function(name, symbol){
-  return { name, symbol }
+  let point = 0
+  return { name, symbol, point }
 }
 
 /**
@@ -135,8 +136,7 @@ const MainGame = (function(){
     let cells = document.querySelectorAll('.cell')
     cells.forEach((cell) => {
       cell.addEventListener('click', (event)=>{
-        if (winner) { return }
-
+        if (winner) { return } // return now if there is a winner
         let { row: posX, column: posY } = cell.dataset
         if (cell.dataset.value != ''){ return }
         board.setCell(posX, posY, players.current().symbol)
@@ -148,13 +148,16 @@ const MainGame = (function(){
 
   return { // an object
     newGame(){
-      players = Players()
       winner = false
       board = GameBoard()
       players.add('Binh','x')
       players.add('Xuan','o')
       refreshBoard()
       setCellsEvent()
+    },
+    start(){
+      players = Players()
+      this.newGame()
     }
   }
 
@@ -162,5 +165,5 @@ const MainGame = (function(){
 
 
 let game = MainGame
-game.newGame()
+game.start()
 document.querySelector('#btn-new').onclick = game.newGame
