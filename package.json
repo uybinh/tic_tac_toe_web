@@ -18,5 +18,6 @@
   "bugs": {
     "url": "https://github.com/uybinh/tic_tac_toe_web/issues"
   },
-  "homepage": "https://github.com/uybinh/tic_tac_toe_web#readme"
+  "homepage": "https://github.com/uybinh/tic_tac_toe_web#readme",
+  "devDependencies": {}
 }

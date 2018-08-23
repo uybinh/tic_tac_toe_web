@@ -3,8 +3,8 @@
  * @returns player object with .name, .symbol
  */
 const Player = function(name, symbol) {
-  let point = 0
-  return { name, symbol, point }
+  let score = 0
+  return { name, symbol, score }
 }
 
 /**
@@ -94,9 +94,12 @@ const GameBoard = function() {
       }
     },
     checkWin(currentPlayer) {
-      return _.any(winningFormations(), formation => {
-        return matchAll(formation, currentPlayer.symbol)
-      })
+      return _.any(winningFormations(),
+        formation => matchAll(formation, currentPlayer.symbol))
+    },
+    checkDraw() {
+      return _.every(winningFormations(),
+        formation => _.every(formation, cell => cell != '' ))
     }
   }
 }
@@ -117,9 +120,13 @@ const MainGame = (function() {
       let { row: posX, column: posY } = cell.dataset
       cell.dataset.value = board.getCell(posX, posY)
     })
+    setPlayerName()
     if (board.checkWin(players.current())) {
       winner = players.current()
-      alert('Winer:' + players.current().name)
+      addWinnerSplash(winner)
+      winner.score += 1
+    } else if (board.checkDraw()) {
+      addDrawSplash()
     }
   }
 
@@ -144,24 +151,71 @@ const MainGame = (function() {
     })
   }
 
-  return {
-    // an object
-    newGame() {
-      players.resetCurrent()
-      winner = false
-      board = GameBoard()
-      refreshBoard()
-      setCellsEvent()
-    },
-    start() {
-      players = Players()
-      players.add('Binh', 'x')
-      players.add('Xuan', 'o')
-      this.newGame()
-    }
+  const addWinnerSplash = function(player) {
+    let winnerElement = document.createElement('div')
+    winnerElement.classList.add('winner')
+    winnerElement.innerHTML = `
+    <h5>
+      Winner<br>${player.name}
+    </h5
+    `
+    document.body.appendChild(winnerElement)
+    winnerElement.addEventListener('click', function() {
+      this.parentNode.removeChild(this)
+      newGame()
+    })
   }
+
+  const addDrawSplash = function() {
+    let winnerElement = document.createElement('div')
+    winnerElement.classList.add('winner')
+    winnerElement.innerHTML = '<h5> Draw </h5'
+    document.body.appendChild(winnerElement)
+    winnerElement.addEventListener('click', function() {
+      this.parentNode.removeChild(this)
+      newGame()
+    })
+  }
+
+  const setPlayerScore = function() {
+    let [player1, player2] = document.querySelectorAll('.score')
+    player1.textContent = players.list()[0].score
+    player2.textContent = players.list()[1].score
+  }
+
+  const setPlayerName = function() {
+    let playerName = document.querySelector('.player-name')
+    let nextPlayer = players.list().filter(ele => ele !== players.current())[0]
+    playerName.textContent = nextPlayer.name
+  }
+
+  const newGame = function() {
+    players.resetCurrent()
+    setPlayerScore()
+    winner = false
+    board = GameBoard()
+    refreshBoard()
+    setCellsEvent()
+  }
+
+  const start = function() {
+    players = Players()
+    players.add('Player 1', 'x')
+    players.add('Player 2', 'o')
+    this.newGame()
+  }
+
+  const reset = function() {
+    players = Players()
+    players.add('Player 1', 'x')
+    players.add('Player 2', 'o')
+    this.newGame()
+  }
+
+  return { newGame, start, reset }
 })()
 
 let game = MainGame
 game.start()
 document.querySelector('#btn-new').onclick = game.newGame
+document.querySelector('#btn-reset').onclick = game.reset.bind(game)

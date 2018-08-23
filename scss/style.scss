@@ -1,6 +1,65 @@
 $border-default: 1px solid gray;
 $color-x: rgb(40, 40, 245);
 $color-o: rgb(226, 23, 50);
+
+
+/*=============================================
+=            Animation            =
+=============================================*/
+@keyframes fadein {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeup {
+  0% {
+    top: 100px;
+    opacity: 0;
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes bounceIn {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -42,9 +101,10 @@ body {
   grid-area: game-info;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
   grid-template-areas: " player1 player2 "
-                       " current current ";
+                       " current current "
+                       ;
   width: 75vw;
   max-width: 240px;
   margin-bottom: 20px;
@@ -64,6 +124,7 @@ body {
     padding-top: 20px;
     padding-bottom: 20px;
   }
+
   h6 {
     font-weight: 700;
   }
@@ -75,6 +136,9 @@ body {
     font-weight: 700;
   }
 }
+
+
+
 .main {
   grid-area: main;
   margin: auto;
@@ -133,4 +197,30 @@ body {
 
   }
 
+}
+
+.winner {
+  // grid-area: winner;
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: rgba(30, 30, 30, .75);
+  opacity: 0;
+  animation: fadein forwards 1 .3s;
+
+  h5 {
+    position: relative;
+    margin: 0;
+    color: rgb(240, 240, 240);
+    font-size: 3rem;
+    font-weight: 700;
+    animation: bounceIn forwards 1 .5s;
+  }
 }
