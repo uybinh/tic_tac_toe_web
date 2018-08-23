@@ -47,6 +47,42 @@ const GameBoard = function(){
     ['', '', '']
   ]
 
+  /**
+   * Winning formations consist of 8 distinct formation
+   * 3 rows, 3 columns, 2 diagonal lines
+   */
+  const winningFormations = function(){
+    // Transpose board
+    const [row1, row2, row3] = boardStatus
+    const transposedBoard = _.zip(row1, row2, row3)
+
+    // diagonal lines
+    const diagonalLine1 = [
+      boardStatus[0][0],
+      boardStatus[1][1],
+      boardStatus[2][2]
+    ]
+    const diagonalLine2 = [
+      boardStatus[0][2],
+      boardStatus[1][1],
+      boardStatus[2][0]
+    ]
+
+    // return winning formations
+    return boardStatus.concat(
+      transposedBoard,
+      [
+        diagonalLine1,
+        diagonalLine2
+      ]
+    )
+  }
+
+
+  let matchAll = function(arr, value){
+    return _.every(arr, (ele) => (ele === value))
+  }
+
   return {
     status(){
       return boardStatus
@@ -62,8 +98,10 @@ const GameBoard = function(){
         return false
       }
     },
-    checkWin(){
-
+    checkWin(currentPlayer){
+      return _.any(winningFormations(), (formation) => {
+        return matchAll(formation, currentPlayer.symbol)
+      })
     }
   }
 }
@@ -76,6 +114,7 @@ const GameBoard = function(){
 const MainGame = (function(){
   let board = GameBoard()
   let players = Players()
+  let winner // to check true/false if the game have a winner
 
   const refreshBoard = function(){
     let cells = document.querySelectorAll('.cell')
@@ -83,6 +122,10 @@ const MainGame = (function(){
       let { row: posX, column: posY } = cell.dataset
       cell.dataset.value = board.getCell(posX, posY)
     })
+    if (board.checkWin(players.current())){
+      winner = players.current()
+      alert('Winer:' + players.current().name)
+    }
   }
 
   /**
@@ -92,26 +135,29 @@ const MainGame = (function(){
     let cells = document.querySelectorAll('.cell')
     cells.forEach((cell) => {
       cell.addEventListener('click', (event)=>{
+        if (winner) { return }
+
         let { row: posX, column: posY } = cell.dataset
         if (cell.dataset.value != ''){ return }
         board.setCell(posX, posY, players.current().symbol)
-        console.log(players.current())
         refreshBoard()
         players.change()
       })
     })
   }
 
-  const newGame = function(){
-    players = Players()
-    board = GameBoard()
-    refreshBoard()
-    players.add('Binh','x')
-    players.add('Xuan','o')
-    setCellsEvent()
+  return { // an object
+    newGame(){
+      players = Players()
+      winner = false
+      board = GameBoard()
+      players.add('Binh','x')
+      players.add('Xuan','o')
+      refreshBoard()
+      setCellsEvent()
+    }
   }
 
-  return { newGame }
 })()
 
 
