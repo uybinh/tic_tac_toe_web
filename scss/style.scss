@@ -102,9 +102,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto auto 1fr;
-  grid-template-areas: " player1 player2 "
-                       " current current "
-                       ;
+  grid-template-areas: " player1 player2 ";
   width: 75vw;
   max-width: 240px;
   margin-bottom: 20px;

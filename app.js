@@ -94,12 +94,14 @@ const GameBoard = function() {
       }
     },
     checkWin(currentPlayer) {
-      return _.any(winningFormations(),
-        formation => matchAll(formation, currentPlayer.symbol))
+      return _.any(winningFormations(), formation =>
+        matchAll(formation, currentPlayer.symbol)
+      )
     },
     checkDraw() {
-      return _.every(winningFormations(),
-        formation => _.every(formation, cell => cell != '' ))
+      return _.every(winningFormations(), formation =>
+        _.every(formation, cell => cell != '')
+      )
     }
   }
 }
@@ -120,7 +122,6 @@ const MainGame = (function() {
       let { row: posX, column: posY } = cell.dataset
       cell.dataset.value = board.getCell(posX, posY)
     })
-    setPlayerName()
     if (board.checkWin(players.current())) {
       winner = players.current()
       addWinnerSplash(winner)
@@ -181,12 +182,6 @@ const MainGame = (function() {
     let [player1, player2] = document.querySelectorAll('.score')
     player1.textContent = players.list()[0].score
     player2.textContent = players.list()[1].score
-  }
-
-  const setPlayerName = function() {
-    let playerName = document.querySelector('.player-name')
-    let nextPlayer = players.list().filter(ele => ele !== players.current())[0]
-    playerName.textContent = nextPlayer.name
   }
 
   const newGame = function() {
