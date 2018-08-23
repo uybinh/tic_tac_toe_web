@@ -2,7 +2,7 @@
  * @module Player
  * @returns player object with .name, .symbol
  */
-const Player = function(name, symbol){
+const Player = function(name, symbol) {
   let point = 0
   return { name, symbol, point }
 }
@@ -11,53 +11,49 @@ const Player = function(name, symbol){
  * @module Players
  * @returns .add(), .change(), .list(), .current()
  */
-const Players = function(){
+const Players = function() {
   let players = []
   let currentPlayer = []
-  const add = function(name, symbol){
+  const add = function(name, symbol) {
     let player = Player(name, symbol)
     players.push(player)
     currentPlayer.unshift(player)
     return players
   }
 
-  const list = function(){
+  const list = function() {
     return players
   }
 
-  const change = function(){
+  const change = function() {
     currentPlayer.push(currentPlayer.shift())
     return true
   }
 
-  const current = function(){
+  const current = function() {
     return currentPlayer[0]
   }
 
-  const resetCurrent = function(){
+  const resetCurrent = function() {
     currentPlayer = Array.from(players)
     return currentPlayer
   }
 
-  return { add, change, list, current, resetCurrent  }
+  return { add, change, list, current, resetCurrent }
 }
 
 /**
  * @module GameBoard
  * @returns .status(), .getCell(), .setCell()
  */
-const GameBoard = function(){
-  let boardStatus = [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', '']
-  ]
+const GameBoard = function() {
+  let boardStatus = [['', '', ''], ['', '', ''], ['', '', '']]
 
   /**
-   * Winning formations consist of 8 distinct formation
-   * 3 rows, 3 columns, 2 diagonal lines
+   * * Winning formations consist of 8 distinct formation
+   * * 3 rows, 3 columns, 2 diagonal lines
    */
-  const winningFormations = function(){
+  const winningFormations = function() {
     // Transpose board
     const [row1, row2, row3] = boardStatus
     const transposedBoard = _.zip(row1, row2, row3)
@@ -75,28 +71,21 @@ const GameBoard = function(){
     ]
 
     // return winning formations
-    return boardStatus.concat(
-      transposedBoard,
-      [
-        diagonalLine1,
-        diagonalLine2
-      ]
-    )
+    return boardStatus.concat(transposedBoard, [diagonalLine1, diagonalLine2])
   }
 
-
-  let matchAll = function(arr, value){
-    return _.every(arr, (ele) => (ele === value))
+  let matchAll = function(arr, value) {
+    return _.every(arr, ele => ele === value)
   }
 
   return {
-    status(){
+    status() {
       return boardStatus
     },
-    getCell(posX, posY){
+    getCell(posX, posY) {
       return boardStatus[posX][posY]
     },
-    setCell(posX, posY, value){
+    setCell(posX, posY, value) {
       if (this.getCell(posX, posY) === '') {
         boardStatus[posX][posY] = value
         return boardStatus[posX][posY]
@@ -104,8 +93,8 @@ const GameBoard = function(){
         return false
       }
     },
-    checkWin(currentPlayer){
-      return _.any(winningFormations(), (formation) => {
+    checkWin(currentPlayer) {
+      return _.any(winningFormations(), formation => {
         return matchAll(formation, currentPlayer.symbol)
       })
     }
@@ -117,18 +106,18 @@ const GameBoard = function(){
  * @module MainGame
  * @returns .GameBoard
  */
-const MainGame = (function(){
+const MainGame = (function() {
   let board = GameBoard()
   let players = Players()
   let winner // to check true/false if the game have a winner
 
-  const refreshBoard = function(){
+  const refreshBoard = function() {
     let cells = document.querySelectorAll('.cell')
-    cells.forEach((cell) => {
+    cells.forEach(cell => {
       let { row: posX, column: posY } = cell.dataset
       cell.dataset.value = board.getCell(posX, posY)
     })
-    if (board.checkWin(players.current())){
+    if (board.checkWin(players.current())) {
       winner = players.current()
       alert('Winer:' + players.current().name)
     }
@@ -137,13 +126,17 @@ const MainGame = (function(){
   /**
    * Add events to cells
    */
-  const setCellsEvent = function(){
+  const setCellsEvent = function() {
     let cells = document.querySelectorAll('.cell')
-    cells.forEach((cell) => {
-      cell.addEventListener('click', (event)=>{
-        if (winner) { return } // return now if there is a winner
+    cells.forEach(cell => {
+      cell.addEventListener('click', () => {
+        if (winner) {
+          return
+        } // return now if there is a winner
         let { row: posX, column: posY } = cell.dataset
-        if (cell.dataset.value != ''){ return }
+        if (cell.dataset.value != '') {
+          return
+        }
         board.setCell(posX, posY, players.current().symbol)
         refreshBoard()
         players.change()
@@ -151,24 +144,23 @@ const MainGame = (function(){
     })
   }
 
-  return { // an object
-    newGame(){
+  return {
+    // an object
+    newGame() {
       players.resetCurrent()
       winner = false
       board = GameBoard()
       refreshBoard()
       setCellsEvent()
     },
-    start(){
+    start() {
       players = Players()
-      players.add('Binh','x')
-      players.add('Xuan','o')
+      players.add('Binh', 'x')
+      players.add('Xuan', 'o')
       this.newGame()
     }
   }
-
 })()
-
 
 let game = MainGame
 game.start()

@@ -1,6 +1,5 @@
 $border-default: 1px solid gray;
 
-
 * {
   box-sizing: border-box;
 }
@@ -13,6 +12,8 @@ body {
 .container {
   display: grid;
   grid-template-areas: " header "
+                       " controls "
+                       " game-info "
                        " main ";
 }
 
@@ -20,7 +21,32 @@ body {
   grid-area: header;
   text-align: center;
 }
+.controls {
+  grid-area: controls;
+  text-align: center;
+  margin-bottom: 20px;
+}
 
+.game-info {
+  grid-area: game-info;
+  display: flex;
+  width: 75vw;
+  max-width: 240px;
+  margin-bottom: 20px;
+  justify-self: center;
+  justify-content: space-around;
+  text-align: center;
+  h6 {
+    font-weight: 700;
+  }
+  p {
+    margin: 0;
+  }
+  .score {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+}
 .main {
   grid-area: main;
   margin: auto;

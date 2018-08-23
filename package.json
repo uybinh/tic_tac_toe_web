@@ -1,0 +1,22 @@
+{
+  "name": "tic_tac_toe_web",
+  "version": "1.0.0",
+  "description": "Tic Tac Toe Game",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uybinh/tic_tac_toe_web.git"
+  },
+  "keywords": [
+    "tic-tac-toe"
+  ],
+  "author": "Phan Uy Bình",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uybinh/tic_tac_toe_web/issues"
+  },
+  "homepage": "https://github.com/uybinh/tic_tac_toe_web#readme"
+}
