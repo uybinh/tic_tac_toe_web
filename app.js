@@ -1,6 +1,13 @@
 /**
+ * @todo refactor current player, don't use array but use current player as
+ * an property of the return object of player
+ */
+
+/**
+ *
  * @module Player
- * @returns player object with .name, .symbol
+ * @param {*} name
+ * @param {*} symbol
  */
 const Player = function(name, symbol) {
   let score = 0
@@ -12,34 +19,43 @@ const Player = function(name, symbol) {
  * @returns .add(), .change(), .list(), .current()
  */
 const Players = function() {
-  let players = []
-  let currentPlayer = []
+  let _players = []
+  let _current
+
   const add = function(name, symbol) {
     let player = Player(name, symbol)
-    players.push(player)
-    currentPlayer.unshift(player)
-    return players
+    _players.push(player)
+    _current = _players[0]
+    return _players
   }
 
   const list = function() {
-    return players
-  }
-
-  const change = function() {
-    currentPlayer.push(currentPlayer.shift())
-    return true
-  }
-
-  const current = function() {
-    return currentPlayer[0]
+    return _players
   }
 
   const resetCurrent = function() {
-    currentPlayer = Array.from(players)
-    return currentPlayer
+    _current = _players[0]
+    return current
   }
 
-  return { add, change, list, current, resetCurrent }
+  const change = function() {
+    _current = _players.filter(function(player) {
+      return player != _current
+    })[0]
+    return true
+  }
+
+  const current = function(){
+    return _current
+  }
+
+  return {
+    add,
+    change,
+    list,
+    current,
+    resetCurrent
+  }
 }
 
 /**
