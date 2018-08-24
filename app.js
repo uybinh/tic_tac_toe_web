@@ -45,7 +45,7 @@ const Players = function() {
     return true
   }
 
-  const current = function(){
+  const current = function() {
     return _current
   }
 
