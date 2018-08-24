@@ -1,3 +1,5 @@
+import _ from './underscore'
+import './scss/style.scss'
 /**
  * @todo refactor current player, don't use array but use current player as
  * an property of the return object of player
